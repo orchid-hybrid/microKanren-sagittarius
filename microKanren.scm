@@ -25,12 +25,20 @@
 (define (var? x) (vector? x))
 (define (var=? x1 x2) (= (vector-ref x1 0) (vector-ref x2 0)))
 
-(define (ext-s x v s) `((,x . ,v) . ,s))
+(define (ext-s-check x v s)
+  (if (occurs-check x v s) #f `((,x . ,v) . ,s)))
 
 (define (walk u s)
   (let ((pr (and (var? u) (assp (lambda (v) (var=? u v)) s))))
     (if pr (walk (cdr pr) s) u)))
 
+(define (occurs-check x v s)
+  (let ((v (walk v s)))
+    (cond
+     ((var? v) (var=? v x))
+     ((pair? v) (or (occurs-check x (car v) s)
+                    (occurs-check x (cdr v) s)))
+     (else #f))))
 
 ;; Unification and disequality
 
@@ -38,8 +46,8 @@
   (let ((u (walk u s)) (v (walk v s)))
     (cond
      ((and (var? u) (var? v) (var=? u v)) s)
-     ((var? u) (ext-s u v s))
-     ((var? v) (ext-s v u s))
+     ((var? u) (ext-s-check u v s))
+     ((var? v) (ext-s-check v u s))
      ((and (pair? u) (pair? v))
       (let ((s (unify (car u) (car v) s)))
 	(and s (unify (cdr u) (cdr v) s))))
