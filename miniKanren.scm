@@ -71,7 +71,7 @@
 	(if (null? $) '() (cons (car $) (take (- n 1) (cdr $)))))))
 
 
-(define (run n g)
+(define (mk-run n g)
   (map reify-1st (take n ((call/fresh g) empty-state))))
 
 (define (run* g)

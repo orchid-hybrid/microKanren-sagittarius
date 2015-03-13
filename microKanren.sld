@@ -1,4 +1,4 @@
-(define-library (micro kanren)
+(define-library (microKanren)
 
   (import (scheme base)
 	  (scheme read)

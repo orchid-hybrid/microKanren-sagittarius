@@ -1,10 +1,10 @@
 ;; number relations based on "oleg numbers"
-(define-library (mini numbers)
+(define-library (miniNumbers)
 
   (import (scheme base)
           (scheme read)
           (scheme write)
-          (mini kanren))
+          (miniKanren))
 
   (export zeroo poso >1o
           full-addero

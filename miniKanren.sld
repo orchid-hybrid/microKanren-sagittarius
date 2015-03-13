@@ -1,14 +1,14 @@
-(define-library (mini kanren)
+(define-library (miniKanren)
 
   (import (scheme base)
 	  (scheme read)
 	  (scheme write)
-	  (micro kanren))
+	  (microKanren))
 
   (export == =/=
 	  
 	  fresh conde
-	  run run* runi)
+	  mk-run run* runi)
 
   (include "miniKanren.scm"))
 
