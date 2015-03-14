@@ -108,8 +108,11 @@
                                      absn))))
                   ((eqv? abs-s abs-f) mzero)
                   (else
-                   (loop (cdr abs)
-                         (cons (cons abs-s abs-f) absn)))))))))
+                   (if (or (var? abs-f) (var? abs-s))
+                       (loop (cdr abs)
+                             (cons (cons abs-s abs-f) absn))
+                       (loop (cdr abs) absn) ;; neither are vars, both different, we can remove it
+                       ))))))))
 
 (define (normalize-symbolo-store k)
   (let ((s (substitution k)))
