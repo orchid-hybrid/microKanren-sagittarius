@@ -87,14 +87,16 @@
 	      (filter (lambda (l) (not (null? l)))
 		      (disequality-store k)))
 	(lambda (d)
-	  (unit (make-kanren (counter k) (substitution k) d (absento-store k))))))
+	  (unit (make-kanren (counter k) (substitution k)
+                             d (absento-store k) (symbolo-store k))))))
 
 (define (normalize-absento-store k)
   (let ((s (substitution k)))
     (let loop ((abs (absento-store k)) (absn '()))
       (if (null? abs)
           (unit (make-kanren (counter k) s
-                             (disequality-store k) absn))
+                             (disequality-store k) absn
+                             (symbolo-store k)))
           (let ((abs-s (walk (caar abs) s))
                 (abs-f (walk (cdar abs) s)))
             (cond ((and (var? abs-f) (var? abs-s))
@@ -107,10 +109,25 @@
                   ((eqv? abs-s abs-f) mzero)
                   (else (loop (cdr abs) absn))))))))
 
+(define (normalize-symbolo-store k)
+  (let ((s (substitution k)))
+    (let loop ((syms (symbolo-store k)) (symsn '()))
+      (if (null? syms)
+          (unit (make-kanren (counter k) s
+                             (disequality-store k)
+                             (absento-store k)
+                             symsn))
+          (let ((v (walk (car syms) s)))
+            (cond ((var? v) (loop (cdr syms) (cons v symsn)))
+                  ((symbol? v) (loop (cdr syms) symsn))
+                  (else mzero)))))))
+
 (define (normalize-constraint-store k)
   (bind (normalize-disequality-store k)
         (lambda (k^)
-          (normalize-absento-store k^))))
+          (bind (normalize-absento-store k^)
+                (lambda (k^^)
+                  (normalize-symbolo-store k^^))))))
 
 
 ;; Monad
@@ -142,21 +159,23 @@
 ;; the language constructs
 
 (define-record-type <kanren>
-  (make-kanren c s d abs)
+  (make-kanren c s d abs sym)
   kanren?
   (c counter)
   (s substitution)
   (d disequality-store)
-  (abs absento-store))
+  (abs absento-store)
+  (sym symbolo-store))
 
-(define empty-state (make-kanren 0 '() '() '()))
+(define empty-state (make-kanren 0 '() '() '() '()))
 
 (define (== u v)
   (lambda (k)
     (let ((s (unify u v (substitution k))))
       (if s
 	  (normalize-constraint-store
-	   (make-kanren (counter k) s (disequality-store k) (absento-store k)))
+	   (make-kanren (counter k) s (disequality-store k) (absento-store k)
+                        (symbolo-store k)))
 	  mzero))))
 
 (define (=/= u v)
@@ -165,20 +184,26 @@
       (if d^
 	  (unit (make-kanren (counter k) (substitution k)
 			     (cons d^ (disequality-store k))
-                             (absento-store k)))
+                             (absento-store k) (symbolo-store k)))
 	  mzero))))
 
 (define (absento s f)
   (lambda (k)
     (normalize-absento-store
      (make-kanren (counter k) (substitution k) (disequality-store k)
-                  (cons (cons s f) (absento-store k))))))
+                  (cons (cons s f) (absento-store k)) (symbolo-store k)))))
+
+(define (symbolo s)
+  (lambda (k)
+    (normalize-absento-store
+     (make-kanren (counter k) (substitution k) (disequality-store k)
+                  (absento-store k) (cons s (symbolo-store k))))))
 
 (define (call/fresh f)
   (lambda (k)
     (let ((c (counter k)))
       ((f (var c)) (make-kanren (+ 1 c) (substitution k) (disequality-store k)
-                                (absento-store k))))))
+                                (absento-store k) (symbolo-store k))))))
 
 (define (disj g1 g2) (lambda (k) (mplus (g1 k) (g2 k))))
 (define (conj g1 g2) (lambda (k) (bind (g1 k) g2)))
