@@ -99,7 +99,9 @@
                              (symbolo-store k)))
           (let ((abs-s (walk (caar abs) s))
                 (abs-f (walk (cdar abs) s)))
-            (cond ((and (var? abs-f) (var? abs-s))
+            (cond ((and (var? abs-f) (var? abs-s) (var=? abs-f abs-f))
+                   mzero)
+                  ((or (var? abs-f) (var? abs-s))
                    (loop (cdr abs) `((,abs-s . ,abs-f) . ,absn)))
                   ((pair? abs-f)
                    (loop (cdr abs)
@@ -107,12 +109,7 @@
                                (cons (cons abs-s (cdr abs-f))
                                      absn))))
                   ((eqv? abs-s abs-f) mzero)
-                  (else
-                   (if (or (var? abs-f) (var? abs-s))
-                       (loop (cdr abs)
-                             (cons (cons abs-s abs-f) absn))
-                       (loop (cdr abs) absn) ;; neither are vars, both different, we can remove it
-                       ))))))))
+                  (else (loop (cdr abs) absn))))))))
 
 (define (normalize-symbolo-store k)
   (let ((s (substitution k)))
