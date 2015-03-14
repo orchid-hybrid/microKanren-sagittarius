@@ -10,7 +10,7 @@
 	  counter substitution disequality-store
 	  empty-state
 	  
-	  == =/=
+	  == =/= absento
 	  
 	  call/fresh
 	  disj conj)

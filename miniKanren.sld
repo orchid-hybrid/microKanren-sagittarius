@@ -5,7 +5,7 @@
 	  (scheme write)
 	  (microKanren))
 
-  (export == =/=
+  (export == =/= absento
 	  
 	  fresh conde
 	  mk-run run* runi)
