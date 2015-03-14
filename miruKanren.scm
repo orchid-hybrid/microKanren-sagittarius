@@ -29,7 +29,9 @@
 ;;   (if (occurs-check x v s) #f `((,x . ,v) . ,s)))
 
 (define (ext-s-check-prefix x v s p)
-  (if (occurs-check x v s) #f (values `((,x . ,v) . ,s) `((,x . ,v) . ,p))))
+  (if (occurs-check x v s)
+      (values #f #f)
+      (values `((,x . ,v) . ,s) `((,x . ,v) . ,p))))
 
 (define (walk u s)
   (let ((pr (and (var? u) (assp (lambda (v) (var=? u v)) s))))
@@ -55,8 +57,12 @@
      ((var? v) (ext-s-check-prefix v u s p))
      ((and (pair? u) (pair? v))
       (let-values (((s p) (unify-prefix (car u) (car v) s p)))
-	(and s (unify-prefix (cdr u) (cdr v) s p))))
-     (else (and (eqv? u v) (values s p))))))
+	(if s
+            (unify-prefix (cdr u) (cdr v) s p)
+            (values #f #f))))
+     (else (if (eqv? u v)
+               (values s p)
+               (values #f #f))))))
 
 
 ;; Monad
@@ -100,7 +106,7 @@
   (lambda (k)
     (let-values (((s p) (unify-prefix u v (substitution k) '())))
       (if s
-	  (make-kanren (counter k) s (store k))
+	  (unit (make-kanren (counter k) s (store k)))
 	  mzero))))
 
 (define (call/fresh f)
@@ -152,7 +158,7 @@
       (walk* v (reify-s v '()))))
   (o (list (var 0)
 	   `(and . ,(map (lambda (constraint)
-                           '?)
+                           'unknown)
 			 (store k))))))
 
 (define (walk* v s)

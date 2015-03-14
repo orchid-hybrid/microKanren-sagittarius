@@ -12,7 +12,7 @@
        (== `(,a . ,res) out)
        (appendo d s res)))))
 
-(run* (lambda (q)
-        (fresh (x y)
-          (== q `(,x ,y))
-          (appendo x y '(a b c)))))
+(display (run* (lambda (q)
+                 (fresh (x y)
+                   (== q `(,x ,y))
+                   (appendo x y '(a b c))))))
