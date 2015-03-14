@@ -7,7 +7,9 @@
   (export var var? var=? walk
 
 	  make-kanren kanren?
-	  counter substitution disequality-store
+	  counter substitution
+          disequality-store
+          absento-store
 	  empty-state
 	  
 	  == =/= absento symbolo

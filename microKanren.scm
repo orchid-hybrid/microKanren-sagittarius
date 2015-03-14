@@ -105,9 +105,11 @@
                    (loop (cdr abs)
                          (cons (cons abs-s (car abs-f))
                                (cons (cons abs-s (cdr abs-f))
-                                     (cdr abs)))))
+                                     absn))))
                   ((eqv? abs-s abs-f) mzero)
-                  (else (loop (cdr abs) absn))))))))
+                  (else
+                   (loop (cdr abs)
+                         (cons (cons abs-s abs-f) absn)))))))))
 
 (define (normalize-symbolo-store k)
   (let ((s (substitution k)))

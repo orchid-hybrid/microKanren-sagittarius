@@ -35,7 +35,9 @@
       (walk* v (reify-s v '()))))
   (o (list (var 0)
 	   `(and . ,(map (lambda (mini) `(or . ,(map (lambda (dis) `(=/= ,(car dis) ,(cdr dis))) mini)))
-			 (disequality-store k))))))
+			 (disequality-store k)))
+           `(and . ,(map (lambda (ab) `(absento ,(car ab) ,(cdr ab)))
+                         (absento-store k))))))
 
 (define (walk* v s)
   (let ((v (walk v s)))
