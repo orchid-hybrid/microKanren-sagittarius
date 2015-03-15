@@ -29,13 +29,25 @@
 ;;   (if (occurs-check x v s) #f `((,x . ,v) . ,s)))
 
 (define (ext-s-check-prefix x v s p)
+  ;(display (list 'x-is x)) (newline)
   (if (occurs-check x v s)
       (values #f #f)
-      (values `((,x . ,v) . ,s) `((,x . ,v) . ,p))))
+      (values `((,x . ,v) . ,s)
+              `((,x . ,v) . ,p)
+              ;(cons (vector-ref x 0) p)
+              )))
 
 (define (walk u s)
   (let ((pr (and (var? u) (assp (lambda (v) (var=? u v)) s))))
     (if pr (walk (cdr pr) s) u)))
+
+(define (walk* v s)
+  (let ((v (walk v s)))
+    (cond
+     ((var? v) v)
+     ((pair? v) (cons (walk* (car v) s)
+		      (walk* (cdr v) s)))
+     (else  v))))
 
 (define (occurs-check x v s)
   (let ((v (walk v s)))
@@ -102,12 +114,53 @@
 
 (define empty-state (make-kanren 0 '() '()))
 
+(define (manage-constraints p c s t)
+  (define (cons* a b)
+    ;; since scheme has no way to short circuit..
+    (if b (cons a b) #f))
+  ;(display (list 'set p)) (newline)
+  ;; extract constraints
+  (let ((updated-t (let loop ((t t))
+                     (if (null? t)
+                         '()
+                         (let ((constraint (car t))
+                               (ts (cdr t)))
+                           (let ((watched-vars (car constraint))
+                                 (constraint-name (cadr constraint))
+                                 (constraint-data (cddr constraint)))
+                             (if (intersects? (lambda (r) (vector-ref (car r) 0)) p
+                                              (lambda (r) (vector-ref r 0))       watched-vars)
+                                 (let ((watched-vars* (walk* watched-vars s)))
+                                   (case constraint-name
+                                     ((symbolo)
+                                      (let ((t* (car watched-vars*)))
+                                        (if (var? t*)
+                                            (cons* (list (list t*) 'symbolo) (loop ts))
+                                            (if (symbol? t*)
+                                                (loop ts)
+                                                #f))))
+                                     (else (error "not implemented constraint yet:" constraint-name))))
+                                 (cons* constraint (loop ts)))))))))
+    (if updated-t
+        (unit (make-kanren c s updated-t))
+        mzero)))
+
 (define (== u v)
   (lambda (k)
     (let-values (((s p) (unify-prefix u v (substitution k) '())))
       (if s
-	  (unit (make-kanren (counter k) s (store k)))
+	  (manage-constraints (sort p <) (counter k) s (store k))
 	  mzero))))
+
+(define (symbolo t)
+  (lambda (k)
+    (let* ((s (substitution k))
+           (t* (walk t s)))
+      (if (var? t*)
+          (unit (make-kanren (counter k) s (cons (list (list t*) 'symbolo) (store k))))
+          (if (symbol? t*)
+              (unit k)
+              mzero)))))
 
 (define (call/fresh f)
   (lambda (k)
@@ -158,16 +211,8 @@
       (walk* v (reify-s v '()))))
   (o (list (var 0)
 	   `(and . ,(map (lambda (constraint)
-                           'unknown)
+                           constraint)
 			 (store k))))))
-
-(define (walk* v s)
-  (let ((v (walk v s)))
-    (cond
-     ((var? v) v)
-     ((pair? v) (cons (walk* (car v) s)
-		      (walk* (cdr v) s)))
-     (else  v))))
 
 (define (reify-s v s)
   (let ((v (walk v s)))

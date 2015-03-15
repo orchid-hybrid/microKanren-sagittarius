@@ -2,10 +2,14 @@
 
   (import (scheme base)
 	  (scheme read)
-	  (scheme write))
+          (scheme cxr)
+	  (scheme write)
+          (srfi 95)
+          (sorted-int-set))
 
   (export ==
 	  fresh conde
+          symbolo
 	  mk-run run* runi)
 
   (include "miruKanren.scm"))
