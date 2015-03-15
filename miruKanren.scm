@@ -130,12 +130,15 @@
                                  (constraint-data (cddr constraint)))
                              (if (intersects? (lambda (r) (vector-ref (car r) 0)) p
                                               (lambda (r) (vector-ref r 0))       watched-vars)
-                                 (let ((watched-vars* (walk* watched-vars s)))
+                                 (let ((watched-vars* (sort (walk* watched-vars s)
+                                                            (lambda (x y) (< (vector-ref x 0)
+                                                                             (vector-ref y 0))))))
                                    (case constraint-name
                                      ((symbolo)
                                       (let ((t* (car watched-vars*)))
                                         (if (var? t*)
-                                            (cons* (list (list t*) 'symbolo) (loop ts))
+                                            (cons* (list (list t*)
+                                                         'symbolo) (loop ts))
                                             (if (symbol? t*)
                                                 (loop ts)
                                                 #f))))
@@ -149,7 +152,9 @@
   (lambda (k)
     (let-values (((s p) (unify-prefix u v (substitution k) '())))
       (if s
-	  (manage-constraints (sort p <) (counter k) s (store k))
+	  (manage-constraints (sort p (lambda (x y) (< (vector-ref (car x) 0)
+                                                       (vector-ref (car y) 0))))
+                              (counter k) s (store k))
 	  mzero))))
 
 (define (symbolo t)
