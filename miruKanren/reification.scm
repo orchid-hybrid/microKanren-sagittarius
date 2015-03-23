@@ -35,8 +35,13 @@
   ;; The query variable will always be the very first
   ;; one so reify (var 0) along with all the constraints
   ;; or extra conditions that might need to be displayed
+  (define (make-=/= eq) `(=/= ,(car eq) ,(cdr eq)))
   (reify-term `(,(var 0) where .
-                ,(map (lambda (constraint)
-                        'unknown)
-                      (surveillance k)))
+                ,(append (map (lambda (d)
+                                `(or . ,(map make-=/= d)))
+                              (disequality-store k))
+                         (map (lambda (constraint)
+                                'unknown)
+                              (surveillance k))
+                         ))
               (substitution k)))

@@ -6,7 +6,9 @@
           mplus
 
           unit
-          bind)
+          bind
+          
+          mapm)
 
   (include "monad.scm"))
 

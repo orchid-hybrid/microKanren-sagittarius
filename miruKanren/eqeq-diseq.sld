@@ -3,7 +3,8 @@
   (import (scheme base)
           (miruKanren kanren)
           (miruKanren monad)
-          (miruKanren unification))
+          (miruKanren unification)
+          (miruKanren disequality))
 
   (export == =/=)
 

@@ -34,7 +34,12 @@
       (values `((,x . ,v) . ,s)
               `((,x . ,v) . ,p))))
 
-(define (unify/prefix u v s p)
+(define (unify u v s)
+  (let-values (((s p) (unify/prefix u v s))) s))
+
+(define (unify/prefix u v s) (unify/prefix* u v s '()))
+
+(define (unify/prefix* u v s p)
   ;; This version of unification builds up a `prefix`
   ;; which contains all the variables that were involved
   ;; in unification that are no longer fresh
@@ -47,14 +52,10 @@
      ((var? u) (extend-substitution/prefix u v s p))
      ((var? v) (extend-substitution/prefix v u s p))
      ((and (pair? u) (pair? v))
-      (let-values (((s p) (unify/prefix (car u) (car v) s p)))
+      (let-values (((s p) (unify/prefix* (car u) (car v) s p)))
 	(if s
-            (unify/prefix (cdr u) (cdr v) s p)
+            (unify/prefix* (cdr u) (cdr v) s p)
             (values #f #f))))
      (else (if (eqv? u v)
                (values s p)
                (values #f #f))))))
-
-(define (unify u v s)
-  (let-values (((s p) (unify/prefix u v s '())))
-    s))

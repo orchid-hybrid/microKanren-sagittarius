@@ -13,3 +13,15 @@
    ((null? $) mzero)
    ((procedure? $) (lambda () (bind ($) g)))
    (else (mplus (g (car $)) (bind (cdr $) g)))))
+
+
+;;;
+
+(define (mapm f l)
+  (if (null? l)
+      (unit '())
+      (bind (f (car l))
+            (lambda (v)
+              (bind (mapm f (cdr l))
+                    (lambda (vs)
+                      (unit (cons v vs))))))))
