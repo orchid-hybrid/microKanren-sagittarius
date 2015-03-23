@@ -144,9 +144,10 @@
                                      (lambda (i) (vector-ref i 0))
                                       watch-list)
                         (let ((updated-list
-                               (concat-map (lambda (x)
-                                             (variables-in-term s x))
-                                           watch-list)))
+                               (sort (concat-map (lambda (x)
+                                                   (variables-in-term s x))
+                                                 watch-list)
+                                     <-var)))
                           (if (null? updated-list)
                               (begin
                                 ;(display 'added-an-operations)
