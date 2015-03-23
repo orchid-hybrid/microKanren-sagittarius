@@ -183,7 +183,7 @@
     (let ((vs (variables-in-term (substitution k) x))
           (g* (lambda (k) ((g (walk* x (substitution k))) k))))
       (if (null? vs)
-          ((g*) k)
+          (g* k)
           (unit (make-kanren (counter k)
                              (substitution k)
                              (cons (cons (sort vs <-var) g*)
@@ -211,6 +211,33 @@
     (else (error "not a number in peano->number" n))))
 
 (define peanoo (bijectiono number->peano peano->number))
+
+
+(define (number->binary-aux len n m)
+  (cond
+   ((odd? n)
+    (number->binary-aux (- len 1) (quotient (- n 1) 2) (cons 1 m)))
+   ((and (not (zero? n)) (even? n))
+    (number->binary-aux (- len 1) (quotient n 2) (cons 0 m)))
+   ((zero? n) (values len m))))
+(define (number->binary len)
+  (lambda (n)
+    (let-values (((len b) (number->binary-aux len n '())))
+      (append (make-list len 0) b))))
+
+(define (binary->number* b)
+  (if (null? b)
+      0
+      (+ (car b)
+         (* 2 (binary->number* (cdr b))))))
+
+(define (binary->number b)
+  (binary->number* (reverse b)))
+
+(define (binaryo digits n b)
+  ((bijectiono (number->binary digits)
+               binary->number)
+   n b))
 
 (define (call/fresh f)
   (lambda (k)

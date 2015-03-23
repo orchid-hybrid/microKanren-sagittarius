@@ -69,6 +69,12 @@
 (newline)
 (newline)
 
+(display (run* (lambda (q)
+                 (fresh (n)
+                   (peanoo 8 q)))))
+(newline)
+(newline)
+
 (display (run* (lambda (n)
                  (fresh (q)
                    (peanoo n q)
@@ -91,3 +97,13 @@
                    ))))
 (newline)
 (newline)
+
+
+;; > (run* (lambda (q) (fresh (x y) (binaryo 8 x y) (== q (list x y)) (== x 5))))
+;; (((5 (0 0 0 0 0 1 0 1)) (and)))
+
+;; > (run* (lambda (q) (fresh (x y) (binaryo 8 x y) (== q (list x y)) (== y '(0 0 0 0 0 0 0 0)))))
+;; (((0 (0 0 0 0 0 0 0 0)) (and)))
+
+;; > (run* (lambda (q) (fresh (x y) (binaryo 8 x y) (== q (list x y)) (== y '(0 0 0 1 0 0 0 0)))))
+;; (((16 (0 0 0 1 0 0 0 0)) (and)))

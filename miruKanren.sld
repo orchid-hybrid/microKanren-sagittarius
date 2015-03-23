@@ -8,7 +8,7 @@
 
   (export ==
           watch
-          peanoo
+          peanoo binaryo
 	  fresh conde
 	  mk-run run* runi)
 
