@@ -22,3 +22,12 @@ echo
 echo
 echo
 
+echo running tests in chicken
+for TEST in $TESTS
+do
+    csi -require-extension r7rs chicken.scm "$TEST" -e '(exit)'
+done
+echo
+echo
+echo
+
