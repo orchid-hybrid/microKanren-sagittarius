@@ -38,5 +38,14 @@ The harness to actually run queries/extract results from streams
 This is the most basic == implementation
 no extra stuff
 
+# disequality (utils kanren monad unification)
+This implements all the disequality-store management that =/= relies on
+
+# eqeq-diseq (kanren monad unification disequality)
+This is a slightly modified == that ensures disequalities aren't violated along with the =/= operator to add a disequality constraint
+
 # basic (mini run eqeq)
 This gives you the basic minikanren language with a single import
+
+# diseq (mini run eqeq-diseq)
+This gives you minikanren language with =/= constraint, with a single import

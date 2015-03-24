@@ -8,6 +8,7 @@
 
   (export disequality
           disequality/assoc
-          normalize-disequality-store)
+          normalize-disequality-store
+          =/=)
 
   (include "disequality.scm"))

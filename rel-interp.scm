@@ -1,5 +1,3 @@
-(import (miniKanren))
-
 ;; relational scheme interpreter
 
 (define lookupo
@@ -32,7 +30,7 @@
         ((symbolo expr) ;; variable
          (lookupo expr env out))
         ((== `(quote ,out) expr)
-         (absento 'closure out)
+         ;;(absento 'closure out)
          (unboundo 'quote env))
         ((fresh (x body) ;; abstraction
            (== `(lambda (,x) ,body) expr)

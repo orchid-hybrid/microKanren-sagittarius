@@ -4,5 +4,6 @@
           (miruKanren run)
           (miruKanren eqeq))
 
-  (export == fresh conde
+  (export ==
+          fresh conde
           run^ run* runi))

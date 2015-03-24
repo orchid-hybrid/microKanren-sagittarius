@@ -4,7 +4,8 @@
 
   (export assp
           filter
-          concat-map)
+          concat-map
+          type?)
 
   (include "utils.scm"))
 

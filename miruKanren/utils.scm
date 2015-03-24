@@ -14,3 +14,11 @@
 
 (define (concat-map f l)
   (apply append (map f l)))
+
+(define (type? x)
+  (cond ((symbol? x) 'symbol)
+        ((number? x) 'number)
+        ((boolean? x) 'boolean)
+        ((null? x) 'null)
+        ((pair? x) 'pair)
+        (else #t)))

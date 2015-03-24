@@ -82,8 +82,20 @@
         (lambda (d)
           (unit (modified-disequality-store
                  (lambda (_)
-                   ;; you couuld return d here..
+                   ;; you could return d here..
                    ;; the filter is just to remove (or)'s
                    ;; from the reified constraint store
                    (filter (lambda (e) (not (null? e))) d))
                  k)))))
+
+(define (=/= u v)
+  (lambda (k)
+    (let ((d^ (disequality u v (substitution k))))
+      (if d^
+          (if (null? d^)
+              (unit k)
+              (unit (modified-disequality-store
+                     (lambda (_)
+                       (cons d^ (disequality-store k)))
+                     k)))
+          mzero))))
