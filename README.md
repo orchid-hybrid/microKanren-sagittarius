@@ -22,3 +22,18 @@ To run in sagittarius:
 rlwrap sagittarius -c -L. -S.sld
 rlwrap sagittarius -c -L. -S.sld t/t1.scm
 ```
+
+To run in chicken: Need r7rs egg.
+
+We have to create a file chicken.scm that includes all the sld files. Start with:
+```
+find . -name '*.sld' | sed -e 's/^.\//\(include "/' | sed -e 's/$/")/' > chicken.scm
+```
+
+then find a dependency ordering manually that the compiler accepts.
+
+```
+csi -require-extension r7rs chicken.scm
+csi -require-extension r7rs chicken.scm t/t1.scm -e '(exit)'
+```
+
