@@ -1,3 +1,9 @@
+;; A stream is one of
+;;  * nil
+;;  * a pair whose cdr is a stream
+;;  * a zero arg lambda 'delaying' a pair or nil
+;;    (can't delay twice!)
+
 (define (pull $)
   (if (procedure? $) (pull ($)) $))
 

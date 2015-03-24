@@ -1,7 +1,7 @@
 (import (scheme base)
         (test-check)
 
-        (miruKanren diseq))
+        (miruKanren mk-diseq))
 
 (test-check "=/= #1"
             (run* (lambda (q) (=/= 'x 'x)))

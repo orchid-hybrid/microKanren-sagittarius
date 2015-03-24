@@ -1,7 +1,7 @@
 (import (scheme base)
         (test-check)
 
-        (miruKanren basic))
+        (miruKanren mk-basic))
 
 (include "prelude.scm")
 

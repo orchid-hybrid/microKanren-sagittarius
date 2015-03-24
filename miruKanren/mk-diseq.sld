@@ -1,9 +1,9 @@
-(define-library (miruKanren basic)
+(define-library (miruKanren mk-diseq)
 
   (import (miruKanren mini)
           (miruKanren run)
-          (miruKanren eqeq))
+          (miruKanren eqeq-diseq))
 
-  (export ==
+  (export == =/=
           fresh conde
           run^ run* runi))

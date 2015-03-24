@@ -39,13 +39,22 @@ This is the most basic == implementation
 no extra stuff
 
 # disequality (utils kanren monad unification)
-This implements all the disequality-store management that =/= relies on
+This implements all the disequality-store management along with the =/= goal/constraint
 
 # eqeq-diseq (kanren monad unification disequality)
-This is a slightly modified == that ensures disequalities aren't violated along with the =/= operator to add a disequality constraint
+This is a slightly modified == that ensures disequalities aren't violated by normalizing the type store
 
-# basic (mini run eqeq)
+# type (utils variables kanren monad micro unification disequality)
+this implements the type-store management
+
+# eqeq-typeo (utils kanren variables monad micro mini unification disequality type)
+This implements the typeo constraint along with a version of ==, it also pulls in =/=
+
+# mk-basic (mini run eqeq)
 This gives you the basic minikanren language with a single import
 
-# diseq (mini run eqeq-diseq)
+# mk-diseq (mini run eqeq-diseq)
 This gives you minikanren language with =/= constraint, with a single import
+
+# mk-types (mini run eqeq-typeo)
+This language is == and =/= along with a flexible `typeo` constraint that lets us implement disjoint types symbolo/booleano/etc along with not-symbolo (using =/=).

@@ -1,4 +1,4 @@
-(define-library (miruKanren types)
+(define-library (miruKanren mk-types)
 
   (import (miruKanren mini)
           (miruKanren run)

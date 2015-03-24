@@ -1,11 +1,13 @@
 (define-library (miruKanren utils)
 
-  (import (scheme base))
+  (import (scheme base)
+          (srfi 95))
 
   (export assp
           filter
           concat-map
-          type?)
+          type?
+          sort)
 
   (include "utils.scm"))
 

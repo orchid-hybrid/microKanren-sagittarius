@@ -1,7 +1,7 @@
 (import (scheme base)
         (test-check)
 
-        (miruKanren types))
+        (miruKanren mk-types))
 
 (include "prelude.scm")
 
@@ -50,3 +50,30 @@
                       (booleano q))))
             '())
 
+(test-check "typeo #6"
+            (run* (lambda (q) (fresh (t)
+                                (typeo q t)
+                                (=/= t 'symbol)
+                                (typeo q 'symbol))))
+            '())
+
+(test-check "typeo #7"
+            (run* (lambda (q) (fresh (t)
+                                (typeo q t)
+                                (typeo q 'symbol)
+                                (=/= t 'symbol))))
+            '())
+
+(test-check "typeo #8"
+            (run* (lambda (q)
+                    (fresh ()
+                      (numbero q)
+                      (not-numbero q))))
+            '())
+
+(test-check "typeo #9"
+            (run* (lambda (q)
+                    (fresh ()
+                      (numbero q)
+                      (not-symbolo q))))
+            '((_.0 where (_.0 : number))))
