@@ -8,8 +8,8 @@
   ;; fresh variable in v
   (let ((v (walk v s)))
     (cond
-     ((var? v) (let ((n (reify-name (substitution-size s))))
-                 (substitution-update (vector-ref v 0) n s)))
+     ((var? v) (let ((n (reify-name (length s))))
+                 (cons `(,v . ,n) s)))
      ((pair? v) (reify-s (cdr v) (reify-s (car v) s)))
      (else s))))
 
@@ -29,7 +29,7 @@
   ;; names for any variables that aren't in the final
   ;; term
   (let ((v (walk* t s)))
-    (walk* v (reify-s v empty-substitution))))
+    (walk* v (reify-s v '()))))
 
 (define (reify-kanren k)
   ;; The query variable will always be the very first

@@ -1,7 +1,6 @@
 (define-library (miruKanren unification)
 
   (import (scheme base)
-          (miruKanren substitution-assoc)
           (miruKanren utils)
           (miruKanren variables))
 

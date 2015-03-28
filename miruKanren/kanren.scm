@@ -11,7 +11,7 @@
   (t surveillance))
 
 (define initial-kanren
-  (make-kanren 0 empty-substitution '() '() '()))
+  (make-kanren 0 '() '() '() '()))
 
 
 ;; Using these modified-* functions instead of make-kanren
