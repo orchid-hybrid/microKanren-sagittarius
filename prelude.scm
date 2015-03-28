@@ -15,3 +15,14 @@
         (== `(,a . ,d) l)
         (== `(,a . ,res) out)
         (appendo d s res))))))
+
+
+(define (mapo f l fl)
+  (conde
+   ((== l '()) (== fl '()))
+   ((fresh (l-car l-cdr
+                  fl-car fl-cdr)
+      (== l `(,l-car . ,l-cdr))
+      (== fl `(,fl-car . ,fl-cdr))
+      (f l-car fl-car)
+      (mapo f l-cdr fl-cdr)))))

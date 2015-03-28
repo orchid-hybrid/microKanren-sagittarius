@@ -21,10 +21,10 @@
                   ((g x*) k)))))
       (if (null? vs)
           (g* k)
-          (unit (make-kanren (counter k)
-                             (substitution k)
-                             (cons (cons (sort vs var<) g*)
-                                   (surveillance k))))))))
+          (unit (modified-surveillance
+                 (lambda (surv)
+                   (cons (cons (sort vs var<) g*) surv))
+                 k))))))
 
 (define (bijectiono f g x y)
   (fresh ()
