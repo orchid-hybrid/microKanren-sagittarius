@@ -1,10 +1,3 @@
-(define (assp p l)
-  (if (null? l)
-      #f
-      (if (p (caar l))
-	  (car l)
-	  (assp p (cdr l)))))
-
 (define (filter p l)
   (if (null? l)
       '()

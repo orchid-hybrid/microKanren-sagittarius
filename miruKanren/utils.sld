@@ -3,8 +3,7 @@
   (import (scheme base)
           (srfi 95))
 
-  (export assp
-          filter
+  (export filter
           concat-map
           type?
           sort)

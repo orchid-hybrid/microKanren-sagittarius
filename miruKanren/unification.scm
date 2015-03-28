@@ -3,8 +3,12 @@
   ;; give either the value it points to, or a fresh variable
   ;;
   ;; it is sort of like `weak-head normal form`
-  (let ((pr (and (var? u) (assp (lambda (v) (var=? u v)) s))))
-    (if pr (walk (cdr pr) s) u)))
+  (if (var? u)
+      (let ((pr (substitution-lookup (vector-ref u 0) s)))
+        (if (eq? pr substitution-not-found)
+            u
+            (walk pr s)))
+      u))
 
 (define (walk* v s)
   ;; walk* recursively walks a term to put it into a
@@ -31,7 +35,7 @@
   (if (occurs-check x v s)
       (values #f
               #f)
-      (values `((,x . ,v) . ,s)
+      (values (substitution-update (vector-ref x 0) v s)
               `((,x . ,v) . ,p))))
 
 (define (unify u v s)

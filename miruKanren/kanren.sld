@@ -1,6 +1,7 @@
 (define-library (miruKanren kanren)
 
-  (import (scheme base))
+  (import (scheme base)
+          (miruKanren substitution-assoc))
 
   (export make-kanren
           kanren?
