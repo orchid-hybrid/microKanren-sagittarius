@@ -16,6 +16,13 @@
         (== `(,a . ,res) out)
         (appendo d s res))))))
 
+(define (eacho p l)
+  (conde
+   ((== l '()))
+   ((fresh (l-car l-cdr)
+      (== l `(,l-car . ,l-cdr))
+      (p l-car)
+      (eacho p l-cdr)))))
 
 (define (mapo f l fl)
   (conde
@@ -26,3 +33,4 @@
       (== fl `(,fl-car . ,fl-cdr))
       (f l-car fl-car)
       (mapo f l-cdr fl-cdr)))))
+
