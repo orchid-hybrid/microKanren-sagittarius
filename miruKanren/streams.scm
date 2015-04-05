@@ -7,6 +7,13 @@
 (define (pull $)
   (if (procedure? $) (pull ($)) $))
 
+(define (stream-map f s)
+  (cond ((null? s) s)
+	((pair? s) (cons (f (car s)) (stream-map f (cdr s))))
+	((procedure? s)
+	 (lambda ()
+	   (stream-map f (s))))))
+
 (define (take n $)
   (if (zero? n)
       '()

@@ -23,3 +23,5 @@
 (include "./miruKanren/eqeq-typeo.sld")
 (include "./miruKanren/mk-basic.sld")
 (include "./miruKanren/mk-types.sld")
+(include "./miruKanren/copy-term.sld")
+(include "./miruKanren/table.sld")

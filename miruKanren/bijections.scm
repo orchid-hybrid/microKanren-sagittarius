@@ -39,8 +39,12 @@
 
 (define (number->binary len)
   (lambda (n)
-    (let-values (((len b) (number->binary-aux len n '())))
-      (append (make-list len 0) b))))
+    (if (number? n)
+	(let-values (((len b) (number->binary-aux len n '())))
+	  (if (>= len 0)
+	      (append (make-list len 0) b)
+	      #f))
+	#f)))
 
 (define (binary->number* b)
   (if (null? b)

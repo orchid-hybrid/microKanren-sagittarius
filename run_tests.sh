@@ -2,7 +2,7 @@
 
 # TODO: exit immediately if a test fails
 
-TESTS="t/t1.scm t/t2.scm t/t3.scm t/t4.scm t/t5.scm t/t6.scm"
+TESTS="t/t1.scm t/t2.scm t/t3.scm t/t4.scm t/t5.scm t/t6.scm t/t7.scm"
 
 echo running tests in larceny
 for TEST in $TESTS

@@ -3,6 +3,7 @@
   (import (scheme base))
 
   (export pull
+          stream-map
           take
           take-all)
 
