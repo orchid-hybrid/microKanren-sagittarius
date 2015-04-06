@@ -14,6 +14,15 @@
 	 (lambda ()
 	   (stream-map f (s))))))
 
+(define (stream-take n s)
+  (if (= n 0)
+      '()
+      (cond ((null? s) s)
+	    ((pair? s) (cons (car s) (stream-take (- n 1) (cdr s))))
+	    ((procedure? s)
+	     (lambda ()
+	       (stream-take n (s)))))))
+
 (define (take n $)
   (if (zero? n)
       '()

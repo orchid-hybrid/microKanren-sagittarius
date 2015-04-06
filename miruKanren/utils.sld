@@ -5,6 +5,7 @@
 
   (export assp
           filter
+	  any
           concat-map
           type?
           sort)

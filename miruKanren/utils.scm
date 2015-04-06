@@ -12,6 +12,11 @@
 	  (cons (car l) (filter p (cdr l)))
 	  (filter p (cdr l)))))
 
+(define (any p l)
+  (if (null? l)
+      #f
+      (or (p (car l)) (any p (cdr l)))))
+
 (define (concat-map f l)
   (apply append (map f l)))
 

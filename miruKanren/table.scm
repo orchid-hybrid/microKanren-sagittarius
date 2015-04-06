@@ -1,7 +1,9 @@
 (define (make-table g)
-  (cons 'table (stream-map (lambda (k)
-			     (walk* (var 0) (substitution k)))
-			   ((call/fresh g) initial-kanren))))
+  ;; artifically limit to 100
+  ;; to help avoid crashes (maybe?)
+  (cons 'table (stream-take 100 (stream-map (lambda (k)
+					      (walk* (var 0) (substitution k)))
+					    ((call/fresh g) initial-kanren)))))
 
 (define (table-membero t q)
   (unless (eq? (car t) 'table)

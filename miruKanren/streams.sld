@@ -4,6 +4,7 @@
 
   (export pull
           stream-map
+          stream-take
           take
           take-all)
 
