@@ -76,4 +76,4 @@
                     (fresh ()
                       (numbero q)
                       (not-symbolo q))))
-            '((_.0 where (_.0 : number))))
+            '((_.0 where (typeo _.0 number))))

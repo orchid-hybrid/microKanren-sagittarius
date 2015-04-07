@@ -2,7 +2,7 @@
 
 TESTS1="t/t1.scm t/t2.scm t/t3.scm t/t4.scm t/t5.scm t/t6.scm t/t7.scm"
 
-TESTS2="t/records/t1.scm t/records/t2.scm t/records/t3.scm"
+TESTS2="t/records/t1.scm t/records/t2.scm t/records/t3.scm t/records/t4.scm"
 
 function test1 {
     echo running tests in $1

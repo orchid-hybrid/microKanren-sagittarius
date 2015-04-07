@@ -28,3 +28,4 @@
 (include "./miruKanren/copy-term.sld")
 (include "./miruKanren/table.sld")
 (include "./examples/closure.sld")
+(include "./examples/relational-interpreter.sld")

@@ -41,7 +41,7 @@
                                 `(or . ,(map make-=/= d)))
                               (disequality-store k))
                          (map (lambda (e)
-                                (list (car e) ': (cdr e)))
+                                (list 'typeo (car e) (cdr e)))
                               (type-store k))
                          (map (lambda (constraint)
                                 'unknown)
