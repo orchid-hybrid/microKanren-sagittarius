@@ -1,6 +1,7 @@
 (include "./srfi/95.sld")
 (include "./test-check.sld")
 (include "./miruKanren/kanren.sld")
+(include "./miruKanren/record-inspection.sld")
 (include "./miruKanren/utils.sld")
 (include "./miruKanren/variables.sld")
 (include "./miruKanren/monad.sld")

@@ -26,4 +26,5 @@
         ((boolean? x) 'boolean)
         ((null? x) 'null)
         ((pair? x) 'pair)
+	((record? x) => (lambda (n/c/d) (car n/c/d)))
         (else #t)))

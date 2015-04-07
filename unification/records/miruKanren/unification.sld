@@ -1,6 +1,7 @@
 (define-library (miruKanren unification)
 
   (import (scheme base)
+          (scheme cxr)
           (miruKanren utils)
           (miruKanren variables)
           (miruKanren record-inspection))

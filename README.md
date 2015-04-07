@@ -13,7 +13,7 @@ It aims to work on all R7RS scheme implementations (that have sort). There are a
 The unifier itself can also be swapped out. It would be nice to try different implementations such as binary trees, union find based unification... Since R7RS scheme doesn't have functors we have to do this in a convoluted way selecting the 'path' of the unification implementation you want to use: We make directories unification/basic and unification/records and put the slds in there. larceny is okay with this but sagittarius and chicken require a symbolic link to the source in there too.
 
 * unification/basic: this is just the plain unification. You can use this with any language level.
-* unification/records: this lets you do some programming that would otherwise require absento constraints. You can only use this with mk-basic
+* unification/records: this lets you do some programming that would otherwise require absento constraints. You can only use this with mk-basic, diseq and types
 
 # How to get a repl or run a file?
 

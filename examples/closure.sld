@@ -6,7 +6,7 @@
     
     (define-record-type <closure> (closure v) closure? (v closure-value))
     
-    (register-record! closure? closure (lambda (b) (list (closure-value b))))
+    (register-record! closure? 'closure closure (lambda (b) (list (closure-value b))))
     
     ))
 

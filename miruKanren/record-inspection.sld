@@ -7,10 +7,13 @@
 
     (define record-table '())
 
-    (define (register-record! predicate? constructor list-fields)
+    ;; name must be different than
+    ;; (symbol number boolean null pair)
+    ;; and anything previously registered
+    (define (register-record! predicate? name constructor list-fields)
       (set! record-table (cond ((assq predicate? record-table) record-table)
 			       (else
-				(cons (cons predicate? (cons constructor list-fields))
+				(cons (cons predicate? (list name constructor list-fields))
 				      record-table)))))
     
     (define (record? s)
