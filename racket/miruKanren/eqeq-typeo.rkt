@@ -1,0 +1,1 @@
+(module eqeq-typeo racket (provide == =/= typeo symbolo numbero booleano nullo pairo not-symbolo not-numbero not-booleano not-nullo not-pairo) (require "scheme/base.rkt" "utils.rkt" "kanren.rkt" "variables.rkt" "monad.rkt" "micro.rkt" "mini.rkt" "unification.rkt" "disequality.rkt" "type.rkt") (include (file "../../miruKanren/eqeq-typeo.scm")))

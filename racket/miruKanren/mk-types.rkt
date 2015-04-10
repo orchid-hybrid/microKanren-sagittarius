@@ -1,0 +1,1 @@
+(module mk-types racket (provide == =/= typeo symbolo numbero booleano nullo pairo not-symbolo not-numbero not-booleano not-nullo not-pairo fresh conde run^ run* runi) (require "mini.rkt" "run.rkt" "eqeq-typeo.rkt"))

@@ -1,0 +1,1 @@
+(module eqeq-watch racket (provide == watch bijectiono peanoo binaryo) (require "scheme/base.rkt" "utils.rkt" "variables.rkt" "kanren.rkt" "monad.rkt" "mini.rkt" "bijections.rkt" "unification.rkt" "surveillance.rkt") (include (file "../../miruKanren/eqeq-watch.scm")))

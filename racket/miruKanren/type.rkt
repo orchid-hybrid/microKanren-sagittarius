@@ -1,0 +1,1 @@
+(module type racket (provide normalize-type-store call/type-of-var) (require "scheme/base.rkt" "utils.rkt" "variables.rkt" "kanren.rkt" "monad.rkt" "micro.rkt" "unification.rkt" "disequality.rkt") (include (file "../../miruKanren/type.scm")))

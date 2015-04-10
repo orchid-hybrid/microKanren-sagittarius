@@ -1,0 +1,1 @@
+(module surveillance racket (provide variables-in-term normalize-surveillance) (require "scheme/base.rkt" "sorted-int-set.rkt" "utils.rkt" "variables.rkt" "kanren.rkt" "monad.rkt" "unification.rkt") (include (file "../../miruKanren/surveillance.scm")))
