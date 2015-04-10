@@ -2,7 +2,7 @@
 
 This is a minikanren implementation. It grew out of the code accompanying the microKanren paper and lessons from Willam Byrd. It's been split into a lot of files to try to make it more modular and approachable.
 
-It aims to work on all R7RS scheme implementations (that have sort). There are a few different minikanren language levels you can import:
+It aims to work on all R7RS scheme implementations. There are a few different minikanren language levels you can import:
 
 * mk-basic: Just simple minikanren - like the reasoned schemer. fresh conde and ==
 * mk-diseq: Basic extended with disequality =/= constraints
@@ -44,3 +44,10 @@ csi -require-extension r7rs chicken-basic.scm
 csi -require-extension r7rs chicken-basic.scm t/t1.scm -e '(exit)'
 ```
 
+To run in racket:
+
+I've written a script racket-module-maker.rkt that transforms the .sld files in miruKanren/ into .rkt module definitions which include the scheme source code in there. You shouldn't need to run this script unless you are working on the code.
+
+* cd racket
+* drracket miruKanren/mk-basic.rkt (or mk-diseq)
+* then you should be able to paste minikanren run queries into the REPL
