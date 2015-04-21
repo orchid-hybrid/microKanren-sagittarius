@@ -28,3 +28,11 @@
         ((pair? x) 'pair)
 	((record? x) => (lambda (n/c/d) (car n/c/d)))
         (else #t)))
+
+(define (intersect l1 l2)
+  (if (null? l1)
+      '()
+      (let ((x (car l1)))
+	(if (member x l2)
+	    (cons x (intersect (cdr l1) l2))
+	    (intersect (cdr l1) l2)))))

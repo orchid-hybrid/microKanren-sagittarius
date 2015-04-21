@@ -10,6 +10,7 @@
           disequality-store
           type-store
           surveillance
+	  domains
 
           initial-kanren
 
@@ -17,6 +18,7 @@
           modified-substitution
           modified-disequality-store
           modified-type-store
-          modified-surveillance)
+          modified-surveillance
+	  modified-domains)
 
   (include "kanren.scm"))

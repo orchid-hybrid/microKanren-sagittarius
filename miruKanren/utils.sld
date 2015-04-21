@@ -9,7 +9,8 @@
 	  any
           concat-map
           type?
-          sort)
+          sort
+	  intersect)
 
   (include "utils.scm"))
 

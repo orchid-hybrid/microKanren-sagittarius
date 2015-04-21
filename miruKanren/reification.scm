@@ -46,5 +46,8 @@
                          (map (lambda (constraint)
                                 'unknown)
                               (surveillance k))
+			 (map (lambda (dom)
+				(list 'domo (car dom) (cdr dom)))
+			      (domains k))
                          ))
               (substitution k)))
