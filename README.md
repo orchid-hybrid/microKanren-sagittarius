@@ -14,6 +14,7 @@ The unifier itself can also be swapped out. It would be nice to try different im
 
 * unification/basic: this is just the plain unification. You can use this with any language level.
 * unification/records: this lets you do some programming that would otherwise require absento constraints. You can only use this with mk-basic, diseq and types
+* unification/binary-trie: Subsitutions are now stored in a persistent trie which is keyed by binary digits of a counter. This should give a log speedup for some operations and a log slowdown for others.
 
 # How to get a repl or run a file?
 

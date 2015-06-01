@@ -6,7 +6,8 @@
   (export var
           var?
           var=?
-          var<)
+          var<
+	  var->int)
 
   (include "variables.scm"))
 
