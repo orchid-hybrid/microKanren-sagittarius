@@ -2,6 +2,7 @@
 
   (import (scheme base)
           (miruKanren variables)
+          (miruKanren substitution)
           (miruKanren unification)
           (miruKanren kanren))
 

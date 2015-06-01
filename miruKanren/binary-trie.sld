@@ -2,6 +2,6 @@
 
   (import (scheme base))
 
-  (export trie-lookup trie-insert)
+  (export trie-lookup trie-insert trie-size)
 
   (include "binary-trie.scm"))

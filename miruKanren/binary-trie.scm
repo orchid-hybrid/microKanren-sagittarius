@@ -49,3 +49,10 @@
 				   value)
 		      (trie-value? tri)
 		      (trie-value tri)))))))
+
+(define (trie-size tri)
+  (if (null? tri)
+      0
+      (+ (if (trie-value? tri) 1 0)
+         (trie-size (trie-t-branch tri))
+         (trie-size (trie-f-branch tri)))))

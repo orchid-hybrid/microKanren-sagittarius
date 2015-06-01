@@ -3,10 +3,15 @@
   ;; give either the value it points to, or a fresh variable
   ;;
   ;; it is sort of like `weak-head normal form`
-  (let ((pr (and (var? u) (assp (lambda (v) (var=? u v)) s))))
-    (if pr (walk (cdr pr) s) u)))
+  (if (var? u)
+      (let-values (((v? v) (substitution-get (var->int u) s)))
+	(if v?
+	    (walk v s)
+	    u))
+      u))
 
 (define (walk* v s)
+  ;; UNCHANGED
   ;; walk* recursively walks a term to put it into a
   ;; normalized/completely evaluated form
   (let ((v (walk v s)))
@@ -17,6 +22,7 @@
      (else v))))
 
 (define (occurs-check x v s)
+  ;; UNCHANGED
   ;; Performing occurs check of a variable in a term
   ;; given a substitution.
   ;; This lets us fail on cyclic/unfounded unifications
@@ -31,15 +37,18 @@
   (if (occurs-check x v s)
       (values #f
               #f)
-      (values `((,x . ,v) . ,s)
+      (values (substitution-set (var->int x) v s)
               `((,x . ,v) . ,p))))
 
 (define (unify u v s)
+  ;; UNCHANGED
   (let-values (((s p) (unify/prefix u v s))) s))
 
+  ;; UNCHANGED
 (define (unify/prefix u v s) (unify/prefix* u v s '()))
 
 (define (unify/prefix* u v s p)
+  ;; UNCHANGED
   ;; This version of unification builds up a `prefix`
   ;; which contains all the variables that were involved
   ;; in unification that are no longer fresh

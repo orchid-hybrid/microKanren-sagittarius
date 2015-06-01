@@ -2,6 +2,7 @@
 
   (import (scheme base)
           (scheme cxr)
+          (miruKanren substitution)
           (miruKanren utils)
           (miruKanren variables)
           (miruKanren record-inspection))
