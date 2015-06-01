@@ -26,11 +26,21 @@ function test2 {
     echo
 }
 
-#test1 larceny "larceny -r7rs -path .:unification/basic -program \"\$TEST\""
-#test1 sagittarius "sagittarius -c -L. -Lunification/basic -S.sld \"\$TEST\""
+test1 larceny "larceny -r7rs -path .:substitution/assoc:unification/basic -program \"\$TEST\""
+test1 sagittarius "sagittarius -c -L. -Lsubstitution/assoc -Lunification/basic -S.sld \"\$TEST\""
 #test1 chicken "csi -require-extension r7rs chicken-basic.scm \"\$TEST\" -e '(exit)'"
 
-test2 larceny "larceny -r7rs -path .:unification/records -program \"\$TEST\""
-test2 sagittarius "sagittarius -c -L. -Lunification/records -S.sld \"\$TEST\""
-test2 chicken "csi -require-extension r7rs chicken-records.scm \"\$TEST\" -e '(exit)'"
+test1 larceny "larceny -r7rs -path .:substitution/binary-trie:unification/basic -program \"\$TEST\""
+test1 sagittarius "sagittarius -c -L. -Lsubstitution/binary-trie -Lunification/basic -S.sld \"\$TEST\""
+
+
+test2 larceny "larceny -r7rs -path .:substitution/assoc:unification/records -program \"\$TEST\""
+test2 sagittarius "sagittarius -c -L. -Lsubstitution/assoc -Lunification/records -S.sld \"\$TEST\""
+#test2 chicken "csi -require-extension r7rs chicken-records.scm \"\$TEST\" -e '(exit)'"
+
+test2 larceny "larceny -r7rs -path .:substitution/binary-trie:unification/records -program \"\$TEST\""
+test2 sagittarius "sagittarius -c -L. -Lsubstitution/binary-trie -Lunification/records -S.sld \"\$TEST\""
+
+
+
 

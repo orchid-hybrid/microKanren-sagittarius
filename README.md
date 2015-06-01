@@ -20,15 +20,15 @@ The unifier itself can also be swapped out. It would be nice to try different im
 
 To run in larceny:
 ```
-rlwrap larceny -r7rs -path .:unification/basic
-rlwrap larceny -r7rs -path .:unification/records
-rlwrap larceny -r7rs -path .:unification/basic -program t/t1.scm
+rlwrap larceny -r7rs -path .:substitution/assoc:unification/basic
+rlwrap larceny -r7rs -path .:substitution/assoc:unification/records
+rlwrap larceny -r7rs -path .:substitution/assoc:unification/basic -program t/t1.scm
 ```
 
 To run in sagittarius:
 ```
-rlwrap sagittarius -c -L. -Lunification/basic -S.sld
-rlwrap sagittarius -c -L. -Lunification/basic -S.sld t/t1.scm
+rlwrap sagittarius -c -L. -Lsubstitution/assoc -Lunification/basic -S.sld
+rlwrap sagittarius -c -L. -Lsubstitution/assoc -Lunification/basic -S.sld t/t1.scm
 ```
 
 To run in chicken: Need r7rs egg.
