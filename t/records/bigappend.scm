@@ -2,7 +2,7 @@
         (test-check)
 
         (miruKanren mk-types)
-	(examples relational-interpreter))
+	(examples relational-interpreter-plus))
 
 ;; https://github.com/webyrd/miniKanren-uncourse/blob/07c3812463d157450ac70199731e6a4a8c5db180/hangouts-by-date/02014-12-21/interp.scm#L388
 

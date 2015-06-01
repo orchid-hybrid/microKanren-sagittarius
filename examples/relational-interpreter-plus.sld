@@ -1,4 +1,4 @@
-(define-library (examples relational-interpreter)
+(define-library (examples relational-interpreter-plus)
   
   (import (scheme base)
 	  (test-check)
