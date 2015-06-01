@@ -12,7 +12,7 @@
   (do domains))
 
 (define initial-kanren
-  (make-kanren 0 '() '() '() '() '()))
+  (make-kanren 0 empty-substitution '() '() '() '()))
 
 
 ;; Using these modified-* functions instead of make-kanren
