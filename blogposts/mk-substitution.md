@@ -17,9 +17,7 @@ Looking up an entry: O(n) - you have to walk down the list (several times actual
 
 Another choice of data structure for this is a binary trie. Variables in minikanren are implemented using a single element vector holding an integer. We can use the binary digits of the integer as the path in a tree whose shape is like this:
 
-```
-http://i.imgur.com/7TYNWeH.gif
-```
+<img src="http://i.imgur.com/7TYNWeH.gif"></img>
 
 and each node can optionally hold a value.
 
