@@ -43,3 +43,7 @@ One thing that I haven't dealt with is subsumption. Currently the disequality co
 
 * https://github.com/orchid-hybrid/microKanren-sagittarius/blob/master/miruKanren/disequality.scm
 * https://github.com/orchid-hybrid/microKanren-sagittarius/blob/master/miruKanren/eqeq-diseq.scm
+
+# Hangouts
+
+* https://www.youtube.com/watch?v=mMQ6On3vdvA
