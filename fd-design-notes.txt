@@ -1,0 +1,34 @@
+finite domain constraints
+
+
+Rulese we ainm to imlpmente:
+
+   * (dom x '()) => #u
+   * (dom x (list singleton)) => (== x singleton)
+   * (dom x s1) (dom x s2) => (dom x (intersect s1 s2)) [requires s1 and s2 to be lists]
+   * (dom x s1) (=/= x e) => (dom x (remove s1 e)) [requires e to be ground]
+
+
+
+idea: Implement the domain store as a fresh-var/dom trie
+
+operations:
+* inserting should intersect the dom if it already exists
+* remove with simultaneous lookup
+
+
+(domo) {dom will simply insert a new association into the domain store after walking the var.}[DONE]
+
+(==) {After a unification each association (u . v) rfom the prefix needs to be processed. [When v is a var] This means that u is no longer fresh, so take u/dom out of the trie the insert v/dom - this will either insert v as a new thing or intersect it with what's already there.}[DONE] {[When v is not a var/its a ground term] we need to remove u/dom and verify that v is inside the list else fails.}[TODO]
+
+(=/=) {when a 'primitive' (need better name for this!) disequality occurs/exists(! tricky point here, what if the dom constraint comes up after this disequality) - one of type (or (=/= <var> <ground-value>)) we need to delete ground-value from the dom associated with var & delete that disequality (since it's redundant now).}[TODO]
+
+Q: none of the above handles domains of size 0 or 1, should we perform that check separately, after all of the above? Then if it requires more unifications to be done we go ahead and do them - triggering the loop?.
+A: every insert/remove should check for 0 and fail on it, for 1 im not sure ...
+you can build up a list of 1s you see in an accumulator to pass back to get processed after - I tried coding it like this originally but it was really guly. im not sure if i shoudl try it again or separate those stages
+it might not be too bad to also pass around the substituion and do it immediately when we get a 1
+
+
+if the dom comes after the =/= wont the =/= still be lingering around in the disequalty store? it only dissapears after a term is ground and the primitive disequality runs
+yeah thats right, it's just a case we need t ohandle - will have to write special tests for it too.
+

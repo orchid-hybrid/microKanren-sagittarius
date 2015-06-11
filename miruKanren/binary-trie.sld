@@ -3,6 +3,7 @@
   (import (scheme base))
 
   (export trie-lookup trie-insert trie-size
-          trie-insert/merge trie-lookup/delete)
+          trie-insert/merge trie-lookup/delete
+	  binary-trie->assoc-list)
 
   (include "binary-trie.scm"))

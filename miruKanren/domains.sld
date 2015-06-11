@@ -6,8 +6,11 @@
           (miruKanren kanren)
           (miruKanren variables)
           (miruKanren unification)
-	  (miruKanren sorted-int-set))
+	  (miruKanren sorted-int-set)
+	  (miruKanren binary-trie))
 
-  (export normalize-domain-store)
+  (export merge-domains
+          domain-store-update-associations
+          normalize-domain-store)
 
   (include "domains.scm"))

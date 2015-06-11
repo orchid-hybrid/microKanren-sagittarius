@@ -6,6 +6,12 @@
    (= 1 (remainder n 2))
    (quotient n 2)))
 
+(define (path->number path)
+  (if (null? path)
+      0
+      (+ (car path)
+	 (* 2 (path->number (cdr path))))))
+
 ;; also: nil is the empty trie
 (define-record-type <trie>
   (trie t f v? v) trie?
@@ -81,3 +87,17 @@
       (+ (if (trie-value? tri) 1 0)
          (trie-size (trie-t-branch tri))
          (trie-size (trie-f-branch tri)))))
+
+(define (binary-trie->assoc-list tri)
+  (define (go path tri)
+    (if (null? tri)
+	'()
+	(let ((rest (append
+		     (go (cons 1 path) (trie-t-branch tri))
+		     (go (cons 0 path) (trie-f-branch tri)))))
+	  (if (trie-value? tri)
+	      (cons
+	       (cons (path->number path) (trie-value tri))
+	       rest)
+	      rest))))
+  (go '() tri))

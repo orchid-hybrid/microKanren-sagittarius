@@ -4,7 +4,8 @@
           (miruKanren variables)
           (miruKanren substitution)
           (miruKanren unification)
-          (miruKanren kanren))
+          (miruKanren kanren)
+          (miruKanren binary-trie))
 
   (export reify-name
           reify-term
