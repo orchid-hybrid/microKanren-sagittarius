@@ -1,12 +1,13 @@
 (define (== u v)
   (lambda (k)
     (let-values (((s p) (unify/prefix u v (substitution k))))
-      (display p) (newline)
       (if s
-	  (normalize-disequality-store
-	   (domain-store-update-associations
-	    (modified-substitution (lambda (_) s) k)
-	    p))
+	  (let ((k (domain-store-update-associations
+		    (modified-substitution (lambda (_) s) k)
+		    p)))
+	    (if (domains k)
+		(normalize-disequality-store k)
+		mzero))
 	  mzero))))
 
 (define (=/= u v)
@@ -59,5 +60,13 @@ A start: intersecting domains
       (domo _.0 (1 2 3 4))
       (domo _.0 (2 4 5 6))))
 BUG!!! fixed
+
+> (run^ 1 (lambda (q) (fresh (x) (domo x '(1 2 3 4)) (== x 3))))
+((_.0 where))
+
+> (run^ 1 (lambda (q) (fresh (x) (domo x '(1 2 3 4)) (== x 5))))
+()
+
+
 
 |#
