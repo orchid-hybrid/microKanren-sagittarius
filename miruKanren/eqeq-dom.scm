@@ -19,10 +19,14 @@
   ;; but we need a (fast) < operation on them
   (lambda (k)
     (let ((v (walk* v (substitution k))))
-      (unit
-       (modified-domains (lambda (dom)
-			   (trie-insert/merge dom (var->int v) (sort d <) merge-domains))
-			 k)))))
+      (if (var? v)
+	  (unit
+	   (modified-domains (lambda (dom)
+			       (trie-insert/merge dom (var->int v) (sort d <) merge-domains))
+			     k))
+	  (if (member v d)
+	      (unit k)
+	      mzero)))))
 
 #|
 
@@ -68,5 +72,11 @@ BUG!!! fixed
 ()
 
 
+
+> (run^ 1 (lambda (q) (domo 1 '(1))))
+((_.0 where))
+
+> (run^ 1 (lambda (q) (domo 1 '(2))))
+()
 
 |#
