@@ -26,29 +26,54 @@
 			     (trie-f-branch tri))
 			 key)))))
 
-(define (trie-insert tri key value)
-  ;; this overwrites/replaces what was already there
+(define (trie-fold f tri key)
   (if (null? tri)
-      (trie-insert (trie '() '() #f #f) key value)
+      (trie-fold f (trie '() '() #f #f) key)
       (if (zero? key)
-	  (trie (trie-t-branch tri)
-		(trie-f-branch tri)
-		#t
-		value)
+	  (let-values (((value? value) (f (trie-value? tri)
+					  (trie-value tri))))
+	    (trie (trie-t-branch tri)
+		  (trie-f-branch tri)
+		  value?
+		  value))
 	  (let-values (((b key) (next-bit key)))
 	    (if b
-		(trie (trie-insert (trie-t-branch tri)
-				   key
-				   value)
+		(trie (trie-fold f (trie-t-branch tri) key)
 		      (trie-f-branch tri)
 		      (trie-value? tri)
 		      (trie-value tri))
 		(trie (trie-t-branch tri)
-		      (trie-insert (trie-f-branch tri)
-				   key
-				   value)
+		      (trie-fold f (trie-f-branch tri) key)
 		      (trie-value? tri)
 		      (trie-value tri)))))))
+
+(define (trie-insert tri key value)
+  ;; this overwrites/replaces what was already there
+  (trie-fold (lambda (v? v)
+	       (values #t value))
+	     tri
+	     key))
+
+(define (trie-insert/merge tri key value merger)
+  ;; this merges with what was already there
+  (trie-fold (lambda (v? v)
+	       (if v?
+		   (values #t (merger value v))
+		   (values #t value)))
+	     tri
+	     key))
+
+(define (trie-lookup/delete tri key)
+  (let ((found? #f)
+	(found #f))
+    (let ((tri (trie-fold (lambda (v? v)
+			    (when v?
+				  (set! found? #t)
+				  (set! found v))
+			    (values #f #f))
+			  tri
+			  key)))
+      (values tri found? found))))
 
 (define (trie-size tri)
   (if (null? tri)

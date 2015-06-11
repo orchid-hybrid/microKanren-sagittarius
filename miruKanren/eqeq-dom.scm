@@ -8,6 +8,12 @@
 	   (domain-store-normalizer p))
 	  mzero))))
 
+(define (=/= u v)
+  (lambda (k)
+    (bind ((=/=-original u v) k)
+	  (lambda (k)
+	    ((domain-store-normalizer '()) k)))))
+
 (define (domain-store-normalizer p)
   (lambda (k)
     (let-values (((k eqs) (normalize-domain-store p k)))
@@ -53,3 +59,33 @@
 
 
 ;; dom reification..
+
+
+;; There is a potential issue with =/=
+;; it may update the disequality store without performing
+;; a new unification
+;;
+;; but unification is the only thing that triggers
+;; normalizing the domain store
+;;
+;; one solution would be to normalize the domain store
+;; after disequality as well as equality
+;;
+;; right now you seem to be able to cheat it by doing
+;; (== q q)
+;;
+;; because of this problem we have the first working
+;; the second not
+
+
+
+;; > (run* (lambda (q) (fresh () (=/= q 'h) (domo q '(o h)))))
+;; (checking (#(0)) (((#(0) . h))))
+;; (ok ((#(0) . h)))
+;; (relevant-disequalities (((#(0) . h))))
+;; ((_.0 where (or (=/= _.0 h)) (domo _.0 (o h))))
+
+;; > (run* (lambda (q) (fresh () (domo q '(o h)) (=/= q 'h))))
+;; (checking (#(0)) ())
+;; (relevant-disequalities ())
+;; ((_.0 where (or (=/= _.0 h)) (domo _.0 (o h))))

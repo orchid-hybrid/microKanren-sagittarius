@@ -27,8 +27,11 @@
   ;;
   ;; we should do B first because the result of that
   ;; might enable new A type things to happen.
-  (let ((s (substitution k))
-	(vars (map car p)))
+  (let* ((s (substitution k))
+	 (vars (map car p))
+	 ;; (rd (relevant-disequalities vars
+	 ;; 			     (disequality-store k)))
+	 )
     (let loop ((do (domains k))
 	       (out '()))
       (if (null? do)
@@ -62,19 +65,53 @@
 		      (cons (car do)
 			    out))))))))
 
+(define (relevant-disequalities vars d)
+  (display (list "checking" vars d)) (newline)
+  ;; the result of this function is a list of pairs
+  ;; (<var> . <value>) each meaning that var cannot be value
+  ;; so you can remove value from vars domain
+  ;;
+  ;; it would be useful to merge these by variable key
+  ;; to return (<var> . <values>)
+  ;;
+  (concat-map (lambda (var)
+		(map car
+		 (filter (lambda (dis)
+			   (display (list "ok" dis)) (newline)
+			   (and (= 1 (length dis))
+				(var=? var (car (car dis))))) d)))
+	      vars))
+
+(define (single-equation-disequalities d)
+  (map car (filter (lambda (dis)
+		     (= 1 (length dis))) d)))
+
 (define (normalize-domain-store-part2 do k)
-  (let loop ((do do)
-	     (acc '())
-	     (eqs '()))
-    (if (null? do)
-	(values (modified-domains (lambda (_) acc) k)
-		eqs)
-	(let ((v (caar do))
-	      (d (cdar do)))
-	  (cond ((null? d) (values #f #f))
-		((null? (cdr d)) (loop (cdr do)
-				       acc
-				       (cons (cons v d) eqs)))
-		(else (loop (cdr do)
-			    (cons (car do) acc)
-			    eqs)))))))
+  ;; this needs to also remove disequalities from domains
+  ;; and upon doing so, it should
+  (let ((d (single-equation-disequalities (disequality-store k))))
+    (let loop ((do do)
+	       (acc '())
+	       (eqs '()))
+      (if (null? do)
+	  (values (modified-domains (lambda (_) acc) k)
+		  eqs)
+	  (let inner ((v (caar do))
+		      (d (cdar do)))
+	    (let ((negative-domain (map cdr (filter (lambda (dis)
+						      (eq? v (car dis)))
+						    d)))))
+	    (if (not (null? negative-domain))
+		;; if we find v in the disequalities
+		;; (filter)
+		;; attempt to remove a thing from the domain
+		;; from the domain
+		
+		
+	     (cond ((null? d) (values #f #f))
+		   ((null? (cdr d)) (loop (cdr do)
+					  acc
+					  (cons (cons v d) eqs)))
+		   (else (loop (cdr do)
+			       (cons (car do) acc)
+			       eqs)))))))))

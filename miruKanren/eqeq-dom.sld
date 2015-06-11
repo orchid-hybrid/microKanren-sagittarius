@@ -4,7 +4,8 @@
           (miruKanren kanren)
           (miruKanren monad)
           (miruKanren unification)
-          (miruKanren disequality)
+	  (rename (miruKanren disequality)
+	          (=/= =/=-original))
 	  (miruKanren domains))
 
   (export == =/= domo)

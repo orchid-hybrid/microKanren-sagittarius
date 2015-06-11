@@ -4,6 +4,7 @@
   (scheme write)
           (miruKanren utils)
           (miruKanren kanren)
+          (miruKanren variables)
           (miruKanren unification)
 	  (miruKanren sorted-int-set))
 
