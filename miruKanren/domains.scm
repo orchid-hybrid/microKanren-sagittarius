@@ -25,3 +25,20 @@
 
 (define (normalize-domain-store dom)
   dom)
+
+;; paritition domain store into (singleton . multiple) bindings
+;; trie -> (assoc-list . trie)
+(define (partition-domain-store d)
+  (let ((ss/d*
+         (trie-fold-opt
+          (lambda (ss/d k v)
+            (cond
+             ;; empty dom: fail
+             ((null? v) '())
+             ;; singleton dom
+             ((null? (cdr v)) `((((,k . ,(car v)) . ,(car ss/d)) . ,(cdr ss/d))))
+             ;; normal dom
+             (else `((,(car ss/d) . ((,k . ,v) . ,(cdr ss/d)))))))
+          '(() . ())
+          d)))
+    (if (null? ss/d*) #f (car ss/d))))

@@ -11,6 +11,7 @@
 
   (export merge-domains
           domain-store-update-associations
-          normalize-domain-store)
+          normalize-domain-store
+          partition-domain-store)
 
   (include "domains.scm"))

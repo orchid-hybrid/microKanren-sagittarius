@@ -7,11 +7,13 @@
    (quotient n 2)))
 
 (define (path->number path)
-  (if (null? path)
-      0
-      (+ (car path)
-	 (* 2 (path->number (cdr path))))))
-
+  (define (aux path)
+    (if (null? path)
+        1
+        (+ (car path)
+           (* 2 (aux (cdr path))))))
+  (if (null? path) 0 (aux (cdr path))))
+  
 ;; also: nil is the empty trie
 (define-record-type <trie>
   (trie t f v? v) trie?
@@ -101,3 +103,20 @@
 	       rest)
 	      rest))))
   (go '() tri))
+
+(define (bind x k) (if (null? x) x (k (car x))))
+
+(define (trie-fold-opt fn init tri)
+  (define (aux path tri memo)
+    (if (null? tri)
+        (list memo)
+        (bind
+         (aux (cons 1 path) (trie-t-branch tri) memo)
+         (lambda (memo)
+           (bind
+            (if (trie-value? tri)
+                (fn memo (path->number path) (trie-value tri))
+                (list memo))
+            (lambda (memo)
+              (aux (cons 0 path) (trie-f-branch tri) memo)))))))
+  (aux '() tri init))
