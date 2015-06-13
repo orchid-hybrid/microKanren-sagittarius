@@ -6,77 +6,33 @@
 		    (modified-substitution (lambda (_) s) k)
 		    p)))
 	    (if (domains k)
-		(normalize-disequality-store k)
+		(bind (normalize-disequality-store k)
+		      (lambda (k)
+			(normalize-domain-store == (subtract-disequalities-from-domains k))))
 		mzero))
 	  mzero))))
 
 (define (=/= u v)
-  (=/=-original u v))
+  (lambda (k)
+    (bind ((=/=-original u v) k)
+	  (lambda (k)
+	    (normalize-domain-store == (subtract-disequalities-from-domains k))))))
 
 (define (domo v d)
   ;; at the moment d must be a list of integers
   ;; it would be good to relax this and support any list of symbols
   ;; but we need a (fast) < operation on them
+  ;;
+  ;; TODO: deal with d length 0 or 1
   (lambda (k)
     (let ((v (walk* v (substitution k))))
       (if (var? v)
-	  (unit
+	  ((== 'x 'x) ;; this is a hack to get normalization to happen
 	   (modified-domains (lambda (dom)
-			       (trie-insert/merge dom (var->int v) (sort d <) merge-domains))
+			       (let ((r
+				      (trie-insert/merge dom (var->int v) (sort d <) merge-domains)))
+				 r))
 			     k))
 	  (if (member v d)
 	      (unit k)
 	      mzero)))))
-
-#|
-
-(import (miruKanren mini) (miruKanren run) (miruKanren eqeq-dom))
-(run^ 1 (lambda (q) (fresh (x) (domo q '(1 2 3 4)) (domo q '(4 2)))))
-
-
-
-A start: intersecting domains
-
-> (run^ 1 (lambda (q) (fresh (x) (domo q '(1 2 3 4)) (domo x '(4 2 5 6)) (== q x))))
-((#(0) . #(1)))
-((_.0 where (domo _.0 (2 4))))
-
-> (run^ 1 (lambda (q) (fresh (x) (domo x '(4 2 5 6)) (== q x))))
-((#(0) . #(1)))
-((_.0 where (domo _.0 (2 4 5 6))))
-
-> (run^ 1 (lambda (q) (fresh (x) (domo q '(1 2 3 4)) (== q x))))
-((#(0) . #(1)))
-((_.0 where (domo _.0 (1 2 3 4))))
-
-
-> (run^ 1 (lambda (q) (fresh (x) (domo q '(1 2 3 4)) (domo x '(4 2 5 6)))))
-((_.0 where
-      (domo _.0 (1 2 3 4))
-      (domo _.1 (2 4 5 6))))
-
-> (run^ 1 (lambda (q) (fresh (x) (domo q '(1 2 3 4)) (domo q '(4 2 5 6)))))
-((_.0 where (domo _.0 (2 4))))
-
-> (run^ 1 (lambda (q) (fresh (x) (== q x) (domo q '(1 2 3 4)) (domo x '(4 2 5 6)))))
-((#(0) . #(1)))
-((_.0 where
-      (domo _.0 (1 2 3 4))
-      (domo _.0 (2 4 5 6))))
-BUG!!! fixed
-
-> (run^ 1 (lambda (q) (fresh (x) (domo x '(1 2 3 4)) (== x 3))))
-((_.0 where))
-
-> (run^ 1 (lambda (q) (fresh (x) (domo x '(1 2 3 4)) (== x 5))))
-()
-
-
-
-> (run^ 1 (lambda (q) (domo 1 '(1))))
-((_.0 where))
-
-> (run^ 1 (lambda (q) (domo 1 '(2))))
-()
-
-|#

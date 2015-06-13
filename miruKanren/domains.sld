@@ -1,6 +1,6 @@
 (define-library (miruKanren domains)
 
-  (import (scheme base)
+  (import (scheme base) (scheme cxr)
   (scheme write)
           (miruKanren utils)
           (miruKanren kanren)
@@ -12,6 +12,7 @@
 
   (export merge-domains
           domain-store-update-associations
+	  subtract-disequalities-from-domains
           normalize-domain-store)
 
   (include "domains.scm"))
