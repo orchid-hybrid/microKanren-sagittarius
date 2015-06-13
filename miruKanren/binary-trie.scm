@@ -13,7 +13,7 @@
         (+ (car path)
            (* 2 (aux (cdr path))))))
   (if (null? path) 0 (aux (cdr path))))
-  
+
 ;; also: nil is the empty trie
 (define-record-type <trie>
   (trie t f v? v) trie?
@@ -104,19 +104,19 @@
 	      rest))))
   (go '() tri))
 
-(define (bind x k) (if (null? x) x (k (car x))))
-
-(define (trie-fold-opt fn init tri)
-  (define (aux path tri memo)
+(define (trie-filter pred tri)
+  (define (go path pred tri)
     (if (null? tri)
-        (list memo)
-        (bind
-         (aux (cons 1 path) (trie-t-branch tri) memo)
-         (lambda (memo)
-           (bind
-            (if (trie-value? tri)
-                (fn memo (path->number path) (trie-value tri))
-                (list memo))
-            (lambda (memo)
-              (aux (cons 0 path) (trie-f-branch tri) memo)))))))
-  (aux '() tri init))
+	(values '() '())
+	(let-values (((t-in t-out) (go (cons 1 path) pred (trie-t-branch tri)))
+		     ((f-in f-out) (go (cons 0 path) pred (trie-f-branch tri))))
+	  (cond ((not (trie-value? tri)) (values (trie t-in f-in #f #f)
+						 (append t-out f-out)))
+		((pred (trie-value tri)) (values (trie t-in f-in #f #f)
+						 (cons (cons (path->number path)
+							     (trie-value tri))
+						       (append t-out f-out))))
+		(else (values (trie t-in f-in #t (trie-value tri))
+			      (append t-out f-out)))))))
+  (go '() pred tri))
+

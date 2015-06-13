@@ -5,6 +5,6 @@
   (export trie-lookup trie-insert trie-size
           trie-insert/merge trie-lookup/delete
 	  binary-trie->assoc-list
-          trie-fold-opt)
+          trie-filter)
 
   (include "binary-trie.scm"))

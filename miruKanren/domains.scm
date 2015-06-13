@@ -19,26 +19,25 @@
 		   (if found?
 		       (if (member v found)
 			   (loop dom (cdr p))
-			   #f))))))))
+			   #f)
+		       (loop dom (cdr p)))))))))
    k))
 ;; TODO: This depends on the CDRs of the prefix being fully walked. Does that hold?
 
-(define (normalize-domain-store dom)
-  dom)
-
-;; paritition domain store into (singleton . multiple) bindings
-;; trie -> (assoc-list . trie)
-(define (partition-domain-store d)
-  (let ((ss/d*
-         (trie-fold-opt
-          (lambda (ss/d k v)
-            (cond
-             ;; empty dom: fail
-             ((null? v) '())
-             ;; singleton dom
-             ((null? (cdr v)) `((((,k . ,(car v)) . ,(car ss/d)) . ,(cdr ss/d))))
-             ;; normal dom
-             (else `((,(car ss/d) . ((,k . ,v) . ,(cdr ss/d)))))))
-          '(() . ())
-          d)))
-    (if (null? ss/d*) #f (car ss/d))))
+(define (normalize-domain-store == k)
+  (let ((dom (domains k)))
+    (let-values (((dom todo)
+		  (trie-filter (lambda (nodes)
+				 (or (null? nodes)
+				     (null? (cdr nodes))))
+			       dom)))
+    (let loop ((todo todo) (k (modified-domains (lambda (_) dom) k)))
+	(if (null? todo)
+	    (unit k)
+	    (let ((v (caar todo))
+		  (u (cdar todo)))
+	      (if (null? u)
+		  mzero
+		  (bind ((== (var v) u) k) ;; it might be safer to do one big unification rather than looping through the list
+			(lambda (k)
+			  (loop (cdr todo) k))))))))))

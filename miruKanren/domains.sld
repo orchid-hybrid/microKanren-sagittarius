@@ -4,6 +4,7 @@
   (scheme write)
           (miruKanren utils)
           (miruKanren kanren)
+          (miruKanren monad)
           (miruKanren variables)
           (miruKanren unification)
 	  (miruKanren sorted-int-set)
@@ -11,7 +12,6 @@
 
   (export merge-domains
           domain-store-update-associations
-          normalize-domain-store
-          partition-domain-store)
+          normalize-domain-store)
 
   (include "domains.scm"))
